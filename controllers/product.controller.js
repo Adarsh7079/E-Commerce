@@ -5,8 +5,12 @@ import { Apifeatures } from "../utils/features.js"
 
 
 //create product -- Admin 
-export const createProduct=asyncHandler(async(req,res,next)=>{
-  const product=await Product.create(req.body)
+export const  createProduct=asyncHandler(async(req,res,next)=>{
+  
+  req.body.user=req.user.id;
+  
+  const product=await Product.create(req.body);
+
   res.status(201).json({
       success:true,
       product
@@ -20,7 +24,7 @@ export const getAllProducts=asyncHandler(async(req,res)=>{
   //this feature allow to show limited itemsd on page using pagination
   const resultPerPage=5;
 
-  const productCount=await Product.countDocument()
+  const productCount=await Product.countDocuments()
   const Apifeature=new Apifeatures(Product.find(),req.query)
   .search().filter().pagination(resultPerPage)
 
@@ -40,10 +44,7 @@ export const updatePoduct=asyncHandler(async(req,res,next)=>{
 
   if(!product)
   {
-   return res.status(404).json({
-      success:false,
-      message:"not found"
-    })
+    return next(new ErrorHandler('Product Not found',404))
   }
   product=await Product.findByIdAndUpdate(req.params.id,req.body,{
     new:true,
@@ -62,10 +63,7 @@ export const deleteProduct=asyncHandler(async(req,res,next)=>{
   
 
   if(!product){
-    return res.status(500).json({
-      success:true,
-      message:"product not found"
-    })
+    return next(new ErrorHandler(' Product Not found',500))
   }
   await Product.deleteOne(product._id);
   res.status(200).json({

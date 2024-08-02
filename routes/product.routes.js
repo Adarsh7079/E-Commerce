@@ -1,15 +1,22 @@
-import express from "express"
-import { getAllProducts ,createProduct, updatePoduct, deleteProduct, getProductDetails} from "../controllers/product.controller.js";
+import express from "express";
+import {
+  getAllProducts,
+  createProduct,
+  updatePoduct,
+  deleteProduct,
+  getProductDetails,
+} from "../controllers/product.controller.js";
+import { isAuthenticatedUser,authorizeRoles } from "../middleware/auth.js";
 
-const route=express();
+const router = express();
 
-route.route("/product").get(getAllProducts)
-route.route("/product/new").post(createProduct)
-route.route("/product/new").post(createProduct)
-route.route("/product/:id").put(updatePoduct)
-.delete(deleteProduct).get(getProductDetails)
+router.route("/product").get(getAllProducts);
 
+router.route("/product/new").post(isAuthenticatedUser,authorizeRoles("admin"), createProduct);
+router
+  .route("/product/:id")
+  .put(isAuthenticatedUser, updatePoduct)
+  .delete(isAuthenticatedUser, deleteProduct)
+  .get(getProductDetails);
 
-
-
-export default route
+export default router;
