@@ -209,3 +209,41 @@ export const getSingleUser=asyncHandler(async(req,res,next)=>{
         users
     })
 })
+
+//Update user Role
+export const updateUserRole=asyncHandler(async(req,res,next)=>{
+  
+    const newUserData={
+        name:req.body.name,
+        email:req.body.email,
+        role:req.body.role
+    }
+    const user=await User.findByIdAndUpdate(req.params.id,newUserData,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    });
+ // await user.save()
+    res.status(200).json({
+        success:true,
+
+    })
+    
+});
+
+//delete user Role(admin)
+export const deleteUser=asyncHandler(async(req,res,next)=>{
+
+    const user=await User.findById(req.params.id)
+   
+    if(!user){
+        return next(new ErrorHandler(`user does not exist with id ${req.params.id}`))
+    }
+    await user.deleteOne(user._id);
+    // we will remove cloudinary 
+    res.status(200).json({
+        success:true,
+        message:"user deleted"
+    })
+    
+});
