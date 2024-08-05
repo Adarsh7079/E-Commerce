@@ -3,10 +3,11 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import {ErrorHandler} from "../utils/ErrorHandler.js";
 import { sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
+import crypto from "crypto"
 
 export const register=asyncHandler(async(req,res,next)=>{
     const {name,email,password}=req.body;
-    const userexist= await User.findById({email});
+    const userexist= await User.findOne({email});
     if(userexist)
     {
         return next(new ErrorHandler('user already exist',404))
@@ -95,4 +96,44 @@ export const forgotPassword=asyncHandler(async(req,res,next)=>{
         await user.save({validateBeforeSave:false});
         return next(new ErrorHandler(error.message,404));
     }
+})
+
+export const resetPassword=asyncHandler(async(req,res,next)=>{
+
+    //createing token has
+    const resetPasswordToken=crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+    const user=await User.findOne({
+        resetPasswordToken
+    })
+    if(!user)
+    {
+        return next(new ErrorHandler("user not found",401))
+    }
+
+    if(req.body.password!==req.body.confirmPassword){
+        return next(new ErrorHandler("Password does not match",401))
+    }
+    user.password=req.body.password;
+    user.resetPasswordToken=undefined;
+    user.resetPasswordExpire=undefined;
+
+    await user.save();
+
+    //login 
+    sendToken(user,200,res);
+
+    
+})
+
+//get user detils 
+export const getUserDetails=asyncHandler(async(req,res,next)=>{
+    const user=await User.findById(req.user.id);
+    res.status(200).json({
+        success:true,
+        user
+    })
 })
