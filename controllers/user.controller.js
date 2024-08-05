@@ -127,13 +127,85 @@ export const resetPassword=asyncHandler(async(req,res,next)=>{
     sendToken(user,200,res);
 
     
-})
+});
 
 //get user detils 
 export const getUserDetails=asyncHandler(async(req,res,next)=>{
+    if(!user)
+        {
+            return next(new ErrorHandler("user not found",401))
+        }
     const user=await User.findById(req.user.id);
+    
     res.status(200).json({
         success:true,
         user
+    });
+});
+
+//Update user Password
+export const updateUserPassword=asyncHandler(async(req,res,next)=>{
+  
+    const user=await User.findById(req.user.id).select("+password");
+    
+    const isPasswordMatch= await user.comparePassword(req.body.oldPassword)
+    if(!isPasswordMatch)
+    {
+        return next(new ErrorHandler("Old password is incorrect",400))
+    }
+
+    if(req.body.newPassword !==req.body.confirmPassword){
+        return next(ErrorHandler("Password doesn't match",400))
+    }
+
+    user.password=req.body.newPassword;
+    await user.save();
+
+    sendToken(user,200,res);
+});
+
+//Update user Profile
+export const updateUserProfile=asyncHandler(async(req,res,next)=>{
+  
+    const newUserData={
+        name:req.body.name,
+        email:req.body.email,
+    }
+    //we will add cloudinary letter 
+    const user=await User.findByIdAndUpdate(req.user.id,newUserData,{
+        new:true,
+        runValidators:true,
+        useFindAndModify:false
+    });
+
+    res.status(200).json({
+        success:true,
+
+    })
+    
+});
+
+//get all user(Admin)
+export const getAllUsers=asyncHandler(async(req,res,next)=>{
+    const users=await User.find();
+
+    res.status(200).json({
+        success:true,
+        users
+    })
+})
+
+//get all Single user(Admin)
+export const getSingleUser=asyncHandler(async(req,res,next)=>{
+    const users=await User.findById(req.params.id);
+
+    if(!users)
+    {
+        return next(new ErrorHandler("user does not exist with id",401))
+    }
+
+    res.status(200).json({
+        success:true,
+        users
     })
 })
