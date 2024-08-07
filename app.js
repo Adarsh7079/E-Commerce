@@ -21,4 +21,8 @@ app.use(error)
 import user from "./routes/user.routes.js"
 app.use("/api/v1",user);
 
+//orrder 
+import order from "./routes/order.routes.js"
+app.use("/api/v1")
+
 export{app}

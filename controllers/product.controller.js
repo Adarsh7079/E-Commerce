@@ -100,9 +100,11 @@ export const createProductReview=asyncHandler(async(req,res,next)=>{
 
   const product=await Product.findById(productId);
 
+
+  //console.log("got",product)
   const isReviewed=product.reviews.find((rev)=>rev.user.toString()===req.user._id.toString());
 
-  if(isReviewed){
+  if(!isReviewed){
     product.reviews.forEach((rev) => {
       if(rev.user.toString()===req.user._id.toString())
       {
@@ -148,10 +150,9 @@ export const getProductReviews=asyncHandler(async(req,res,next)=>{
 });
 
 //Delete Review
-
 export const delteProductReviews=asyncHandler(async(req,res,next)=>{
 
-  const product=await Product.findById(req.query.productId);
+  const product=await Product.findById(req.query.id);
 
   if(!product){
     return next(new ErrorHandler('Product Not found',404))
