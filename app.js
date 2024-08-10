@@ -23,6 +23,7 @@ app.use("/api/v1",user);
 
 //orrder 
 import order from "./routes/order.routes.js"
-app.use("/api/v1")
+app.use("/api/v1",order)
 
 export{app}
+

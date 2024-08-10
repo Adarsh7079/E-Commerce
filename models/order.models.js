@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  shippingInfo: {
+  shippingInfo:
+   
+    {
     address: {
       type: String,
       required: true,
@@ -25,8 +27,9 @@ const orderSchema = new mongoose.Schema({
     phoneNo: {
       type: Number,
       required: true,
-    },
-  },
+    }
+  }
+   ,
   orderItems: [
     {
       name: {
