@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.item.activeIcon{
+	@apply hidden;
+}
+.item.active.activeIcon{
+	@apply hidden;
+}
+
+.item.active.inactiveIcon{
+	@apply block;
+}

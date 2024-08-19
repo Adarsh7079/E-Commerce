@@ -5,6 +5,7 @@ import { CgProfile } from "react-icons/cg";
 import { IoCartOutline } from "react-icons/io5";
 import { FaEquals } from "react-icons/fa";
 import { MdClose } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [open, setOpne] = useState(false);
@@ -14,45 +15,48 @@ const Header = () => {
       <div className="w-full md:rounded-full shadow-xl mt-2 md:h-[70px] hidden md:flex  items-center">
         {/* Desktop View  */}
         <div className=" flex  w-11/12 mx-auto  justify-between">
-        <div className="px-0  flex items-center">
-                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrzxFJUBHiepoNwhtKQIUJGKW9yoUUPttiwWmiSNzXVMaNFmEIsSfijGF_-ssEbAMEVE&usqp=CAU" alt="" 
-                            className="w-[80px] rounded-full"/>
-                         </div>
-          <div className=" flex gap-5 rounded-xl border-2 px-3 items-center h-[40px] w-[600px] shadow-md ">
-            <input
-              className=" outline-none w-full text-gray-500"
-              type="text"
-              placeholder="search...."
+          <div className="px-0  flex items-center">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrzxFJUBHiepoNwhtKQIUJGKW9yoUUPttiwWmiSNzXVMaNFmEIsSfijGF_-ssEbAMEVE&usqp=CAU"
+              alt=""
+              className="w-[80px] rounded-full"
             />
-            <div>
-              <FaSearch className=" cursor-pointer hover:text-orange-500  transition-all delay-100" />
-            </div>
           </div>
+         
           <div className=" flex  items-center gap-20">
-            <a
-              href="asdsad"
+            <Link
+              to="/"
               className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
+              to="/products"
               href="asdsa"
               className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
             >
               Product
-            </a>
-            <a
+            </Link>
+            <Link
               href="asdsa"
               className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
             >
               Contact
-            </a>
-            <a
+            </Link>
+            <Link
               href="asd"
               className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
             >
               About
-            </a>
+            </Link>
+          </div>
+          <div className=" flex items-center">
+          <Link to="/search" className=" flex gap-5 rounded-xl cursor-pointer border-2 px-3 justify-center items-center h-[35px] w-[400px] ">
+            <p className=" text-gray-400">Search......</p>
+            <div className="  w-full flex items-end justify-end">
+              <FaSearch className="  text-gray-500  transition-all delay-100" />
+            </div>
+          </Link>
           </div>
           <div className="flex items-center gap-10">
             <div className=" shadow-xl rounded-3xl px-3 h-[40px] flex items-center gap-3 hover:bg-orange-400 cursor-pointer  transition-all delay-200 text-gray-500">
@@ -72,10 +76,13 @@ const Header = () => {
 
       <div className=" relative w:full md:hidden items-center h-[50px] shadow-xl ">
         <div className="flex gap-5 px-2 items-center">
-        <div className="px-0  flex items-center">
-                           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrzxFJUBHiepoNwhtKQIUJGKW9yoUUPttiwWmiSNzXVMaNFmEIsSfijGF_-ssEbAMEVE&usqp=CAU" alt="" 
-                            className="w-[70px] rounded-full flex items-center"/>
-                         </div>
+          <div className="px-0  flex items-center">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrzxFJUBHiepoNwhtKQIUJGKW9yoUUPttiwWmiSNzXVMaNFmEIsSfijGF_-ssEbAMEVE&usqp=CAU"
+              alt=""
+              className="w-[70px] rounded-full flex items-center"
+            />
+          </div>
           <div className="bg-white h-[35px] flex  items-center justify-center w-full rounded-xl border-2 px-3  ">
             <input
               className=" outline-none w-full text-gray-500"
@@ -140,30 +147,31 @@ const Header = () => {
                   </div>
                 )}
                 <div className=" flex  flex-col items-center mt-10 gap-5 ">
-                  <a
+                  <Link
                     href="asdsad"
                     className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
                   >
                     Home
-                  </a>
-                  <a
+                  </Link>
+                  <Link
+                    to="/products"
                     href="asdsa"
                     className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
                   >
                     Product
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="asdsa"
                     className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
                   >
                     Contact
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     href="asd"
                     className=" text-gray-500 hover:text-orange-500  text-xl transition-all delay-150"
                   >
                     About
-                  </a>
+                  </Link>
                   {login ? (
                     <div className=" w-full flex justify-center">
                       <button className=" bg-orange-500 w-full h-[40px] font-semibold hover:bg-orange-600 rounded-lg text-gray-200">
