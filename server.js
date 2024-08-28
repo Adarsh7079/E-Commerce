@@ -1,6 +1,7 @@
 import {app} from "./app.js"
 import dotenv from "dotenv"
 import connectDb from "./db/database.js"
+import cloudinary from "cloudinary"
 
 dotenv.config({path:"./config.env"})
 process.on("uncaughtException",(err)=>{
@@ -18,6 +19,11 @@ connectDb()
     console.log("MONGO db connection failed!!!",err);
 })
 
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 //for unhanlde serve crash
 process.on("UnhandleRejection",err=>{
     console.log(`Error: ${err.message}`);

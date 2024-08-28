@@ -4,26 +4,43 @@ import {ErrorHandler} from "../utils/ErrorHandler.js";
 import { sendToken } from "../utils/sendToken.js";
 import { sendEmail } from "../utils/sendEmail.js";
 import crypto from "crypto"
+import cloudinary from "cloudinary"
 
-export const register=asyncHandler(async(req,res,next)=>{
-    const {name,email,password}=req.body;
-    const userexist= await User.findOne({email});
-    if(userexist)
-    {
-        return next(new ErrorHandler('user already exist',404))
-    }
-    const user=await User.create({
-        name,
-        email,
-        password,
-        avatar:{
-            public_id:"123131313",
-            url:'http/adasdasd'
+export const register = asyncHandler(async (req, res, next) => {
+    try {
+     
+       const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+            folder: "avatars",
+            width: 150,
+            crop: "scale"
+        });
+
+        // console.log("File uploaded successfully:", myCloud);
+        console.log("got data ",req.body);
+        const { name, email, password } = req.body;
+
+        const userExist = await User.findOne({ email });
+        
+        if (userExist) {
+            return next(new ErrorHandler('User already exists', 404));
         }
 
-    })
-    sendToken(user,201,res)
-})
+        const user = await User.create({
+            name,
+            email,
+            password,
+            avatar: {
+                public_id:myCloud.public_id,
+                url:myCloud.secure_url
+            }
+        });
+
+        sendToken(user, 201, res);
+    } catch (error) {
+        console.error('Registration Error:', error);
+        return next(new ErrorHandler('Registration failed', 500));
+    }
+});
 
 //login 
 export const loginuser=asyncHandler(async(req,res,next)=>{
