@@ -16,15 +16,15 @@ const App = () => {
     <>
       <Header/>
       <Routes>
-        {/* <Route path='/' element={<Home/>}/> */}
-        <Route path='/' element={<LoginSignUp/>}/>
+        <Route path='/' element={<Home/>}/>
+        <Route path='/login' element={<LoginSignUp/>}/>
         <Route path='/product/:id' element={<ProductCardDetails/>}/>
         <Route path='/products' element={<Products/>}/>
         <Route path='/products/:keyword' element={<Products/>}/>
         <Route path='/search' element={<Search/>}/>
       </Routes>
      
-      <Footer/>
+      {/* <Footer/> */}
     </>
   )
 }
